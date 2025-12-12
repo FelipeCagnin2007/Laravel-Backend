@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
-    public function index()
-    {
-        return Produto::all();
+ public function index(Request $request)
+{
+    $query = $request->query('q'); // pega ?q=algo
+    if ($query) {
+        return Produto::where('nome', 'like', "%{$query}%")->get();
     }
+    return Produto::all();
+}
 
     public function store(Request $request)
     {
@@ -22,6 +26,7 @@ class ProdutoController extends Controller
     {
         return Produto::findOrFail($id);
     }
+
 
     public function update(Request $request, $id)
     {
